@@ -1,0 +1,33 @@
+# dependencias
+/node_modules
+/.pnp
+.pnp.js
+
+# pruebas
+/coverage
+
+# next.js
+/.next/
+/out/
+next-env.d.ts
+*.tsbuildinfo
+
+# producción
+/build
+
+# varios
+.DS_Store
+*.pem
+npm-debug.log*
+
+# variables de entorno locales
+.env
+.env.local
+.env.*.local
+
+# vercel
+.vercel
+
+# solo pnpm: evita commitear lockfiles de otros gestores
+package-lock.json
+yarn.lock

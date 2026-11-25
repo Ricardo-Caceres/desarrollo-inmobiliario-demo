@@ -1,0 +1,59 @@
+/* ./styles/globals.css */
+@import "tailwindcss";
+
+@theme {
+  --font-display: var(--font-cormorant), ui-serif, Georgia, serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  /* acento dorado; cambiar aquí cambia todo el sitio */
+  --color-accent: #e8c26a; /* texto, enlaces, iconos */
+  --color-accent-strong: #d4a63c; /* fondos de botón primario, bordes de outline */
+  --color-muted: #a3a3a3;
+  --color-line: #262626;
+  --color-surface: #0a0a0a;
+}
+
+html {
+  scroll-padding-top: 5rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* En @layer base para que las utilidades de Tailwind (también en layers) puedan ganarles:
+   una regla sin layer, como `a { color: inherit }`, anularía text-white, text-accent, etc. */
+@layer base {
+  html,
+  body {
+    padding: 0;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background: #000;
+    color: #fff;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  ::selection {
+    background: var(--color-accent-strong);
+    color: #000;
+  }
+}

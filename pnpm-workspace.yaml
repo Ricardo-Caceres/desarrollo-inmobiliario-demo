@@ -1,0 +1,5 @@
+allowBuilds:
+  '@parcel/watcher': false
+  fsevents: false
+minimumReleaseAge: 1440
+strictDepBuilds: true

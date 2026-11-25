@@ -1,0 +1,30 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 1
+    groups:
+      minor-and-patch:
+        update-types:
+          - minor
+          - patch
+    ignore:
+      # EXPIRA 2027-03-01: revisar compatibilidad de typescript-eslint / plugins de React / @react-three/fiber
+      - dependency-name: typescript
+        update-types: ['version-update:semver-major']
+      # EXPIRA 2027-03-01: revisar compatibilidad de typescript-eslint / plugins de React / @react-three/fiber
+      - dependency-name: eslint
+        update-types: ['version-update:semver-major']
+      # EXPIRA 2027-03-01: revisar compatibilidad de typescript-eslint / plugins de React / @react-three/fiber
+      - dependency-name: react
+        versions: ['>=19.4.0']
+      # EXPIRA 2027-03-01: revisar compatibilidad de typescript-eslint / plugins de React / @react-three/fiber
+      - dependency-name: react-dom
+        versions: ['>=19.4.0']
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
