@@ -27,6 +27,18 @@ describe('contenido local', () => {
       }
     }
   })
+
+  it('las plantas suman los m² interiores y de terraza declarados', () => {
+    const outdoor = new Set(['terrace', 'pool'])
+    for (const dev of localContent.developments) {
+      for (const type of dev.unitTypes) {
+        const area = (inside: boolean) =>
+          type.rooms.filter((r) => outdoor.has(r.kind) !== inside).reduce((sum, r) => sum + r.w * r.h, 0)
+        expect(area(true), `${dev.slug}/${type.id} interior`).toBe(type.interiorM2)
+        expect(area(false), `${dev.slug}/${type.id} terraza`).toBe(type.terraceM2)
+      }
+    }
+  })
 })
 
 describe('contentSchema rechaza', () => {
@@ -67,5 +79,29 @@ describe('contentSchema rechaza', () => {
     const c = clone()
     c.developments[0].tagline.es = ''
     expect(contentSchema.safeParse(c).success).toBe(false)
+  })
+
+  it('un prototipo cuya planta no dibuja todos los baños declarados', () => {
+    const c = clone()
+    const penthouse = c.developments[0].unitTypes.find((t) => t.id === 'penthouse')!
+    penthouse.rooms = penthouse.rooms.filter((r) => r.id !== 'ensuite')
+    const result = contentSchema.safeParse(c)
+    expect(result.success).toBe(false)
+    expect(result.error?.issues[0].path).toEqual(['developments', 0, 'unitTypes', 2, 'bathrooms'])
+  })
+
+  it('un medio baño declarado sin dibujar', () => {
+    const c = clone()
+    c.developments[0].unitTypes[0].bathrooms = 1.5
+    expect(contentSchema.safeParse(c).success).toBe(false)
+  })
+
+  it('habitaciones solapadas o fuera de la retícula de 0.5 m', () => {
+    const c = clone()
+    c.developments[0].unitTypes[0].rooms[1].x = 4
+    expect(contentSchema.safeParse(c).success).toBe(false)
+    const d = clone()
+    d.developments[0].unitTypes[0].rooms[0].w = 5.25
+    expect(contentSchema.safeParse(d).success).toBe(false)
   })
 })

@@ -54,7 +54,7 @@ const es = {
     interior: 'Interior',
     terrace: 'Terraza',
     sqm: 'm²',
-    floorPlanSlot: 'Plano',
+    floorPlan: 'Plano',
     paymentPlansTitle: 'Planes de pago',
     downPayment: 'Enganche',
     installments: 'Mensualidades',

@@ -52,7 +52,7 @@ const en = {
     interior: 'Interior',
     terrace: 'Terrace',
     sqm: 'm²',
-    floorPlanSlot: 'Floor plan',
+    floorPlan: 'Floor plan',
     paymentPlansTitle: 'Payment plans',
     downPayment: 'Down payment',
     installments: 'Monthly installments',
