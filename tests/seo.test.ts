@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { buildAlternates, isIndexablePath } from '@/lib/seo'
+import { buildAlternates, isIndexablePath, robotsFor } from '@/lib/seo'
 import { SITE_URL } from '@/lib/site'
 
 describe('buildAlternates', () => {
@@ -25,5 +25,12 @@ describe('isIndexablePath', () => {
 
   it('otras rutas no lo son todavía', () => {
     expect(isIndexablePath('/nope')).toBe(false)
+  })
+})
+
+describe('robotsFor', () => {
+  it('la home es index y las páginas de desarrollo noindex', () => {
+    expect(robotsFor('/')).toEqual({ index: true, follow: true })
+    expect(robotsFor('/developments/lumarel-tulum')).toEqual({ index: false, follow: false })
   })
 })
