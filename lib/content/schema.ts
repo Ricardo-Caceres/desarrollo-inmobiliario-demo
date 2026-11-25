@@ -16,27 +16,55 @@ export const developerSchema = z.object({
   about: localizedText,
 })
 
-// Rectángulo en planta (metros) que F4 dibuja como plano isométrico.
+// Rectángulo en planta (metros) que se dibuja como plano isométrico; retícula de 0.5 m.
+const meters = z.number().multipleOf(0.5)
 export const roomSchema = z.object({
   id,
-  kind: z.enum(['living', 'kitchen', 'bedroom', 'bathroom', 'terrace', 'pool', 'study', 'laundry']),
+  kind: z.enum(['living', 'kitchen', 'bedroom', 'bathroom', 'powder', 'terrace', 'pool', 'study', 'laundry']),
   label: localizedText,
-  x: z.number().min(0),
-  y: z.number().min(0),
-  w: z.number().positive(),
-  h: z.number().positive(),
+  x: meters.min(0),
+  y: meters.min(0),
+  w: meters.positive(),
+  h: meters.positive(),
 })
+export type Room = z.infer<typeof roomSchema>
 
 // Prototipo: la planta que comparten varias unidades.
-export const unitTypeSchema = z.object({
-  id,
-  name: localizedText,
-  bedrooms: z.number().int().min(0),
-  bathrooms: z.number().min(1),
-  interiorM2: z.number().positive(),
-  terraceM2: z.number().min(0),
-  rooms: z.array(roomSchema).min(1),
-})
+// bathrooms cuenta baños completos y .5 por un medio baño; la planta debe dibujar los mismos.
+export const unitTypeSchema = z
+  .object({
+    id,
+    name: localizedText,
+    bedrooms: z.number().int().min(0),
+    bathrooms: z.number().min(1).multipleOf(0.5),
+    interiorM2: z.number().positive(),
+    terraceM2: z.number().min(0),
+    rooms: z.array(roomSchema).min(1),
+  })
+  .superRefine((type, ctx) => {
+    const count = (kind: Room['kind']) => type.rooms.filter((r) => r.kind === kind).length
+    const expected = [
+      { kind: 'bedroom', drawn: count('bedroom'), declared: type.bedrooms, path: 'bedrooms' },
+      { kind: 'bathroom', drawn: count('bathroom'), declared: Math.floor(type.bathrooms), path: 'bathrooms' },
+      { kind: 'powder', drawn: count('powder'), declared: type.bathrooms % 1 === 0 ? 0 : 1, path: 'bathrooms' },
+    ] as const
+    for (const e of expected) {
+      if (e.drawn !== e.declared) {
+        ctx.addIssue({
+          code: 'custom',
+          path: [e.path],
+          message: `El prototipo ${type.id} declara ${e.declared} ${e.kind} pero su planta dibuja ${e.drawn}`,
+        })
+      }
+    }
+    type.rooms.forEach((a, i) => {
+      for (const b of type.rooms.slice(i + 1)) {
+        if (a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h) {
+          ctx.addIssue({ code: 'custom', path: ['rooms', i], message: `Habitaciones solapadas: ${a.id} y ${b.id}` })
+        }
+      }
+    })
+  })
 
 export const unitSchema = z.object({
   id,
@@ -143,7 +171,6 @@ export const contentSchema = z
   })
 
 export type Developer = z.infer<typeof developerSchema>
-export type Room = z.infer<typeof roomSchema>
 export type UnitType = z.infer<typeof unitTypeSchema>
 export type Unit = z.infer<typeof unitSchema>
 export type PaymentPlan = z.infer<typeof paymentPlanSchema>
