@@ -1,0 +1,129 @@
+import type { Development } from '../schema'
+import { buildUnits } from './units'
+
+const row = (n: number, typeId: string) => Array<string>(n).fill(typeId)
+
+export const lumarelTulum: Development = {
+  slug: 'lumarel-tulum',
+  name: 'Lumarel Tulum',
+  city: 'tulum',
+  neighborhood: { en: 'Aldea Zamá', es: 'Aldea Zamá' },
+  address: {
+    en: 'Region 15, Aldea Zamá, Tulum, Quintana Roo',
+    es: 'Región 15, Aldea Zamá, Tulum, Quintana Roo',
+  },
+  location: { lat: 20.1998, lng: -87.4627 },
+  status: 'presale',
+  deliveryDate: '2028-06',
+  currency: 'USD',
+  tagline: {
+    en: 'Jungle living, ten minutes from the beach.',
+    es: 'Vida en la selva, a diez minutos de la playa.',
+  },
+  description: {
+    en: 'Lumarel Tulum is a low-rise residence of four levels set among native canopy in Aldea Zamá. Studios, one-bedroom apartments and private-pool penthouses are designed for owners who want a vacation home that earns while they are away, backed by full rental management.',
+    es: 'Lumarel Tulum es una residencia de cuatro niveles rodeada de selva nativa en Aldea Zamá. Estudios, departamentos de una recámara y penthouses con alberca privada están pensados para quien busca una casa vacacional que genere ingresos mientras no la usa, con administración de renta incluida.',
+  },
+  amenities: [
+    { id: 'rooftop', label: { en: 'Rooftop lounge with jungle views', es: 'Terraza rooftop con vista a la selva' } },
+    { id: 'pool', label: { en: 'Infinity pool', es: 'Alberca infinita' } },
+    { id: 'plunge', label: { en: 'Cenote-style plunge pool', es: 'Alberca de inmersión estilo cenote' } },
+    { id: 'coworking', label: { en: 'Coworking space', es: 'Espacio de coworking' } },
+    { id: 'rental-management', label: { en: 'Vacation rental management', es: 'Gestión de renta vacacional' } },
+    { id: 'gym', label: { en: 'Open-air gym', es: 'Gimnasio al aire libre' } },
+    { id: 'bikes', label: { en: 'Bike sharing', es: 'Bicicletas compartidas' } },
+    { id: 'security', label: { en: '24/7 security', es: 'Seguridad las 24 horas' } },
+  ],
+  unitTypes: [
+    {
+      id: 'studio',
+      name: { en: 'Studio', es: 'Estudio' },
+      bedrooms: 0,
+      bathrooms: 1,
+      interiorM2: 45,
+      terraceM2: 12,
+      rooms: [
+        { id: 'living', kind: 'living', label: { en: 'Living and sleeping area', es: 'Sala y dormitorio' }, x: 0, y: 0, w: 5, h: 5 },
+        { id: 'kitchen', kind: 'kitchen', label: { en: 'Kitchen', es: 'Cocina' }, x: 5, y: 0, w: 4, h: 2.5 },
+        { id: 'bath', kind: 'bathroom', label: { en: 'Bathroom', es: 'Baño' }, x: 5, y: 2.5, w: 4, h: 2.5 },
+        { id: 'terrace', kind: 'terrace', label: { en: 'Terrace', es: 'Terraza' }, x: 0, y: 5, w: 6, h: 2 },
+      ],
+    },
+    {
+      id: 'one-bedroom',
+      name: { en: 'One Bedroom', es: 'Una recámara' },
+      bedrooms: 1,
+      bathrooms: 1.5,
+      interiorM2: 70,
+      terraceM2: 18,
+      rooms: [
+        { id: 'living', kind: 'living', label: { en: 'Living room', es: 'Sala' }, x: 0, y: 0, w: 5, h: 4 },
+        { id: 'kitchen', kind: 'kitchen', label: { en: 'Kitchen and dining', es: 'Cocina y comedor' }, x: 0, y: 4, w: 5, h: 3 },
+        { id: 'bedroom', kind: 'bedroom', label: { en: 'Bedroom', es: 'Recámara' }, x: 5, y: 0, w: 5, h: 4.5 },
+        { id: 'bath', kind: 'bathroom', label: { en: 'Bathroom', es: 'Baño' }, x: 5, y: 4.5, w: 5, h: 2.5 },
+        { id: 'terrace', kind: 'terrace', label: { en: 'Terrace', es: 'Terraza' }, x: 0, y: 7, w: 9, h: 2 },
+      ],
+    },
+    {
+      id: 'penthouse',
+      name: { en: 'Penthouse with Private Pool', es: 'Penthouse con alberca privada' },
+      bedrooms: 2,
+      bathrooms: 2,
+      interiorM2: 130,
+      terraceM2: 60,
+      rooms: [
+        { id: 'living', kind: 'living', label: { en: 'Living room', es: 'Sala' }, x: 0, y: 0, w: 7, h: 5 },
+        { id: 'bedroom-1', kind: 'bedroom', label: { en: 'Primary bedroom', es: 'Recámara principal' }, x: 7, y: 0, w: 6, h: 5 },
+        { id: 'kitchen', kind: 'kitchen', label: { en: 'Kitchen and dining', es: 'Cocina y comedor' }, x: 0, y: 5, w: 5, h: 5 },
+        { id: 'laundry', kind: 'laundry', label: { en: 'Laundry', es: 'Lavandería' }, x: 5, y: 5, w: 2, h: 2.5 },
+        { id: 'bath', kind: 'bathroom', label: { en: 'Bathroom', es: 'Baño' }, x: 5, y: 7.5, w: 2, h: 2.5 },
+        { id: 'bedroom-2', kind: 'bedroom', label: { en: 'Second bedroom', es: 'Segunda recámara' }, x: 7, y: 5, w: 6, h: 5 },
+        { id: 'terrace', kind: 'terrace', label: { en: 'Terrace', es: 'Terraza' }, x: 0, y: 10, w: 13, h: 3 },
+        { id: 'pool', kind: 'pool', label: { en: 'Private pool', es: 'Alberca privada' }, x: 0, y: 13, w: 7, h: 3 },
+      ],
+    },
+  ],
+  // Niveles 0 a 2: estudios y una recámara; nivel 3: penthouses y una recámara.
+  units: buildUnits({
+    prefix: 'A',
+    floors: [
+      { floor: 0, typeIds: [...row(3, 'studio'), ...row(2, 'one-bedroom')] },
+      { floor: 1, typeIds: [...row(3, 'studio'), ...row(2, 'one-bedroom')] },
+      { floor: 2, typeIds: [...row(3, 'studio'), ...row(2, 'one-bedroom')] },
+      { floor: 3, typeIds: [...row(3, 'penthouse'), ...row(2, 'one-bedroom')] },
+    ],
+    basePrice: { studio: 210_000, 'one-bedroom': 320_000, penthouse: 600_000 },
+    floorStep: 0.04,
+    viewPremium: { pool: 0.03 },
+    viewFor: (_typeId, column) => (column % 2 === 0 ? 'jungle' : 'pool'),
+  }),
+  paymentPlans: [
+    {
+      id: 'cash',
+      name: { en: 'Cash payment', es: 'Pago de contado' },
+      downPaymentPct: 100,
+      installmentsPct: 0,
+      onDeliveryPct: 0,
+      installmentsMonths: 0,
+      discountPct: 8,
+    },
+    {
+      id: '30-70',
+      name: { en: '30 / 70', es: '30 / 70' },
+      downPaymentPct: 30,
+      installmentsPct: 0,
+      onDeliveryPct: 70,
+      installmentsMonths: 0,
+      discountPct: 3,
+    },
+    {
+      id: '30-40-30',
+      name: { en: '30 / 40 / 30', es: '30 / 40 / 30' },
+      downPaymentPct: 30,
+      installmentsPct: 40,
+      onDeliveryPct: 30,
+      installmentsMonths: 18,
+      discountPct: 0,
+    },
+  ],
+}
