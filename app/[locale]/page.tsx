@@ -17,9 +17,9 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   return (
     <>
       <section className="relative overflow-hidden border-b border-line">
-        <HeroSkyline className="pointer-events-none absolute inset-0 h-full w-full opacity-60 md:opacity-100" />
+        <HeroSkyline className="pointer-events-none absolute inset-0 h-full w-full opacity-25 md:opacity-100" />
         <div className="relative mx-auto max-w-6xl px-6 py-28 md:py-44">
-          <h1 className="font-display text-5xl leading-[1.05] md:text-7xl">{developer.name}</h1>
+          <h1 className="font-display text-5xl leading-[1.05] md:text-7xl">{dict.meta.siteName}</h1>
           <p className="mt-6 max-w-xl font-display text-2xl text-accent md:text-3xl">
             {localize(developer.tagline, locale)}
           </p>
