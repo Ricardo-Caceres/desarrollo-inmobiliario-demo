@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { localContent } from '@/lib/content/local'
-import { availableUnits, formatPrice, localize, priceRange, unitsByType, unitType } from '@/lib/content/queries'
+import { availableUnits, formatDelivery, formatPrice, minAvailablePrice, localize, priceRange, unitsByType, unitType } from '@/lib/content/queries'
 
 const dev = () => structuredClone(localContent.developments[0])
 
@@ -49,5 +49,30 @@ describe('formatPrice', () => {
     expect(formatPrice(14_500_000, 'MXN', 'es')).toMatch(/14,500,000/)
     expect(formatPrice(14_500_000, 'MXN', 'en')).not.toMatch(/\./)
     expect(formatPrice(210_000, 'USD', 'es')).toMatch(/210,000/)
+  })
+})
+
+describe('formatDelivery', () => {
+  it('formatea mes y año según el idioma', () => {
+    expect(formatDelivery('2028-06', 'en')).toBe('June 2028')
+    expect(formatDelivery('2028-06', 'es')).toBe('junio de 2028')
+    expect(formatDelivery('2027-11', 'es')).toBe('noviembre de 2027')
+  })
+
+  it('no depende de la zona horaria en enero', () => {
+    expect(formatDelivery('2029-01', 'en')).toBe('January 2029')
+  })
+})
+
+describe('minAvailablePrice', () => {
+  it('ignora reservadas y vendidas; null si no hay disponibles', () => {
+    const units = dev().units.slice(0, 3)
+    units[0].status = 'sold'
+    units[1].status = 'available'
+    units[1].price = 500
+    units[2].status = 'reserved'
+    expect(minAvailablePrice(units)).toBe(500)
+    units[1].status = 'sold'
+    expect(minAvailablePrice(units)).toBeNull()
   })
 })
